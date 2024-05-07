@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import '../home_pageUser.dart';
 import 'login_page.dart';
+import '../model/modelUser.dart'; // Import model pengguna
+import '../repository/user_repository.dart'; // Import repositori pengguna
 
 class RegisterPage extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +30,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 30.0),
             TextFormField(
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
                 prefixIcon: Icon(Icons.person),
@@ -35,9 +42,10 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextFormField(
+              controller: addressController,
               decoration: InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email),
+                labelText: 'Address',
+                prefixIcon: Icon(Icons.home),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
@@ -46,6 +54,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextFormField(
+              controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
@@ -59,6 +68,19 @@ class RegisterPage extends StatelessWidget {
             SizedBox(height: 30.0),
             ElevatedButton(
               onPressed: () {
+                String name = nameController.text;
+                String address = addressController.text;
+                String password = passwordController.text;
+
+                UserModel newUser = UserModel(
+                  username: name,
+                  address: address,
+                  role: 'user',
+                  password: password,
+                );
+
+                UserRepository.addUser(newUser);
+
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),

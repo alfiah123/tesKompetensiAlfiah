@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/modelProducts.dart';
+import '../model/modelCart.dart';
+import '../repository/cart_repository.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -56,10 +58,10 @@ class ProductDetailPage extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              product.description, // Gunakan deskripsi dari model
+              product.description,
               style: TextStyle(
                 fontSize: 16.0,
-                fontFamily: 'SFPro', // Gunakan font family SFPro
+                fontFamily: 'SFPro',
               ),
             ),
             SizedBox(height: 16.0),
@@ -73,7 +75,33 @@ class ProductDetailPage extends StatelessWidget {
             ),
             SizedBox(height: 24.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                bool isProductInCart = CartRepository.cartItems
+                    .any((item) => item.productName == product.productName);
+
+                if (isProductInCart) {
+                  CartRepository.cartItems.forEach((item) {
+                    if (item.productName == product.productName) {
+                      item.quantity++;
+                    }
+                  });
+                } else {
+                  CartRepository.cartItems.add(
+                    CartItem(
+                      productName: product.productName,
+                      price: product.price,
+                      quantity: 1,
+                    ),
+                  );
+                }
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Produk ditambahkan ke keranjang.'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 primary: Colors.black,
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),

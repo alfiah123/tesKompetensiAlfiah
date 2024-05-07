@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../repository/user_repository.dart';
 import 'login_page.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -27,7 +28,7 @@ class ProfilePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                'Alfiah',
+                UserRepository.loggedInUser?.username ?? '',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -36,17 +37,18 @@ class ProfilePage extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                'alfiah@example.com',
+                UserRepository.loggedInUser?.address ?? '',
                 style: TextStyle(fontSize: 18, fontFamily: 'SFPro'),
               ),
               SizedBox(height: 10),
               Text(
-                'Admin',
+                UserRepository.loggedInUser?.role ?? '',
                 style: TextStyle(fontSize: 18, fontFamily: 'SFPro'),
               ),
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
+                  UserRepository.loggedInUser = null; // Clear loggedInUser
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

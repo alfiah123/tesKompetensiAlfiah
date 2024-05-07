@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../home_pageUser.dart';
+import '../model/modelOrders.dart';
+import '../repository/cart_repository.dart';
+import '../repository/order_repository.dart';
 
 class PaymentPage extends StatelessWidget {
   @override
@@ -21,9 +23,10 @@ class PaymentPage extends StatelessWidget {
             Text(
               'Informasi Pengiriman',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'SFPro'),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SFPro',
+              ),
             ),
             SizedBox(height: 10),
             TextFormField(
@@ -50,9 +53,10 @@ class PaymentPage extends StatelessWidget {
             Text(
               'Rincian Pembayaran',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'SFPro'),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SFPro',
+              ),
             ),
             SizedBox(height: 10),
             TextFormField(
@@ -78,11 +82,42 @@ class PaymentPage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePageUser()),
-                  (route) => false, // Hapus semua rute lainnya
-                );
+                if (CartRepository.cartItems.isEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Error"),
+                        content: Text(
+                            "Cart is empty. Please add items to your cart before proceeding."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("OK"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  double totalPrice = CartRepository.getTotalPrice();
+                  OrderRepository.orders.add(
+                    OrderItem(
+                      orderNumber: 'ORD00${OrderRepository.orders.length + 1}',
+                      date: DateTime.now().toString(),
+                      totalAmount: totalPrice,
+                      status: 'Menunggu Pembayaran',
+                    ),
+                  );
+                  CartRepository.cartItems.clear();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePageUser()),
+                    (route) => false,
+                  );
+                }
               },
               child: Text('Konfirmasi Pesanan'),
             ),

@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:teskompetensi_alfiah/view/register_page.dart';
 import '../home_pageUser.dart';
 import '../home_pageAdmin.dart';
+import '../model/modelUser.dart';
+import '../repository/user_repository.dart';
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +31,9 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 30.0),
             TextFormField(
+              controller: emailController,
               decoration: InputDecoration(
-                labelText: 'Email Adress',
+                labelText: 'Email Address',
                 prefixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
@@ -36,6 +42,7 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             TextFormField(
+              controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
@@ -48,24 +55,16 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 30.0),
             ElevatedButton(
               onPressed: () {
-                String role = 'user';
+                String email = emailController.text;
+                String password = passwordController.text;
 
-                if (role == 'admin') {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePageAdmin()),
-                  );
-                } else if (role == 'user') {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePageUser()),
-                  );
-                } else {
+                if (email.isEmpty || password.isEmpty) {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                       title: Text('Error'),
-                      content: Text('Invalid role. Please contact support.'),
+                      content:
+                          Text('Email address and password cannot be empty.'),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -76,6 +75,40 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   );
+                } else {
+                  UserModel? user = UserRepository.getUserByUsername(email);
+
+                  if (user != null && user.password == password) {
+                    UserRepository.loggedInUser = user;
+                    if (user.role == 'admin') {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePageAdmin()),
+                      );
+                    } else if (user.role == 'user') {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePageUser()),
+                      );
+                    }
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Invalid email or password.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

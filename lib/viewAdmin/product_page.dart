@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teskompetensi_alfiah/view/productdetail_page.dart';
-import 'package:teskompetensi_alfiah/viewAdmin/productdetail_page.dart';
 import '../model/modelProducts.dart';
+import '../repository/product_repository.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -10,30 +10,12 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   String selectedCategory = 'Semua';
-  final List<Product> products = [
-    Product(
-      productName: 'Nasi Goreng',
-      description: 'Nasi goreng dengan bumbu rempah khas Indonesia.',
-      price: 15000,
-      imageUrl:
-          'https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg',
-      jenisMakanan: 'Makanan',
-    ),
-    Product(
-      productName: 'Es Teh Manis',
-      description: 'Es teh manis dengan tambahan es serut.',
-      price: 5000,
-      imageUrl:
-          'https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg',
-      jenisMakanan: 'Minuman',
-    ),
-  ];
 
   List<Product> filteredProducts() {
     if (selectedCategory == 'Semua') {
-      return products;
+      return ProductRepository.products;
     } else {
-      return products
+      return ProductRepository.products
           .where((product) => product.jenisMakanan == selectedCategory)
           .toList();
     }
@@ -43,7 +25,7 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Product', style: TextStyle(fontFamily: 'SFPro')),
+        title: Text('Menu Page', style: TextStyle(fontFamily: 'SFPro')),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
       ),
@@ -113,7 +95,7 @@ class _ProductListPageState extends State<ProductListPage> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
               ),
@@ -124,7 +106,7 @@ class _ProductListPageState extends State<ProductListPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailPageAdmin(
+                        builder: (context) => ProductDetailPage(
                           product: filteredProducts()[index],
                         ),
                       ),
@@ -135,11 +117,14 @@ class _ProductListPageState extends State<ProductListPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(
-                          filteredProducts()[index].imageUrl,
-                          height: 120.0,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                        Expanded(
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image.network(
+                              filteredProducts()[index].imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(8.0),
@@ -151,15 +136,6 @@ class _ProductListPageState extends State<ProductListPage> {
                                 style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'SFPro',
-                                ),
-                              ),
-                              SizedBox(height: 4.0),
-                              Text(
-                                filteredProducts()[index].description,
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
                                   fontFamily: 'SFPro',
                                 ),
                               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'payment_page.dart';
-import '../model/modelCart.dart';
+import '../repository/cart_repository.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -8,23 +8,10 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  final List<CartItem> cartItems = [
-    CartItem(
-      productName: 'Nasi Goreng',
-      price: 15000,
-      quantity: 2,
-    ),
-    CartItem(
-      productName: 'Es Teh Manis',
-      price: 5000,
-      quantity: 1,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     double total = 0;
-    cartItems.forEach((item) {
+    CartRepository.cartItems.forEach((item) {
       total += item.price * item.quantity;
     });
 
@@ -43,9 +30,9 @@ class _CartPageState extends State<CartPage> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: cartItems.length,
+                itemCount: CartRepository.cartItems.length,
                 itemBuilder: (context, index) {
-                  final cartItem = cartItems[index];
+                  final cartItem = CartRepository.cartItems[index];
                   return ListTile(
                     title: Text(
                       cartItem.productName,
@@ -64,6 +51,8 @@ class _CartPageState extends State<CartPage> {
                             setState(() {
                               if (cartItem.quantity > 1) {
                                 cartItem.quantity--;
+                              } else {
+                                CartRepository.cartItems.removeAt(index);
                               }
                             });
                           },

@@ -20,7 +20,7 @@ class _OrderFormPageState extends State<OrderFormPage> {
     super.initState();
     if (widget.product != null) {
       _productNameController.text = widget.product!.productName;
-      _quantityController.text = '1'; // Default quantity
+      _quantityController.text = '1';
     }
   }
 

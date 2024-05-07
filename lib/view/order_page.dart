@@ -1,28 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/modelOrders.dart';
+import '../repository/order_repository.dart';
 
 class OrdersPage extends StatelessWidget {
-  final List<OrderItem> orders = [
-    OrderItem(
-      orderNumber: 'ORD001',
-      date: '30 April 2024',
-      totalAmount: 25000,
-      status: 'Dikirim',
-    ),
-    OrderItem(
-      orderNumber: 'ORD002',
-      date: '25 April 2024',
-      totalAmount: 35000,
-      status: 'Dikirim',
-    ),
-    OrderItem(
-      orderNumber: 'ORD003',
-      date: '20 April 2024',
-      totalAmount: 40000,
-      status: 'Dibatalkan',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +15,9 @@ class OrdersPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
-        itemCount: orders.length,
+        itemCount: OrderRepository.orders.length,
         itemBuilder: (context, index) {
-          final order = orders[index];
+          final order = OrderRepository.orders[index];
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Card(
