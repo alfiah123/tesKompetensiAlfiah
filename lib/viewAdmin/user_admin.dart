@@ -5,7 +5,10 @@ class AdminUserCRUDPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Admin Users'),
+        title:
+            Text('Manage Admin Users', style: TextStyle(fontFamily: 'SFPro')),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
       ),
       body: Center(
         child: Text('Admin User CRUD Page'),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../home_pageAdmin.dart';
 import '../model/modelProducts.dart';
+import '../repository/product_repository.dart';
+import 'edit_product.dart';
 
 class ProductDetailPageAdmin extends StatelessWidget {
   final Product product;
@@ -72,23 +75,54 @@ class ProductDetailPageAdmin extends StatelessWidget {
               ),
             ),
             SizedBox(height: 24.0),
-            // ElevatedButton(
-            //   onPressed: () {},
-            //   style: ElevatedButton.styleFrom(
-            //     primary: Colors.black,
-            //     padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(30.0),
-            //     ),
-            //   ),
-            //   child: Text(
-            //     'Tambahkan ke Keranjang',
-            //     style: TextStyle(
-            //       fontSize: 16.0,
-            //       fontFamily: 'SFPro',
-            //     ),
-            //   ),
-            // ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProductPage(product: product),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child: Text(
+                'Edit Product',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: 'SFPro',
+                ),
+              ),
+            ),
+            SizedBox(height: 24.0),
+            ElevatedButton(
+              onPressed: () {
+                ProductRepository.deleteProduct(product);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePageAdmin()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child: Text(
+                'Hapus Produk',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: 'SFPro',
+                ),
+              ),
+            ),
           ],
         ),
       ),

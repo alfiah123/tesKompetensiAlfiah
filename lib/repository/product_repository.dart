@@ -27,4 +27,19 @@ class ProductRepository {
       jenisMakanan: 'Makanan',
     ),
   ];
+
+  static void addProduct(Product product) {
+    products.add(product);
+  }
+
+  static void deleteProduct(Product product) {
+    products.remove(product);
+  }
+
+  static void updateProduct(Product oldProduct, Product newProduct) {
+    int index = products.indexWhere((product) => product == oldProduct);
+    if (index != -1) {
+      products[index] = newProduct;
+    }
+  }
 }

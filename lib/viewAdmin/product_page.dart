@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:teskompetensi_alfiah/view/productdetail_page.dart';
+import 'package:teskompetensi_alfiah/viewAdmin/productdetail_page.dart';
 import '../model/modelProducts.dart';
 import '../repository/product_repository.dart';
+import 'add_product.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu Page', style: TextStyle(fontFamily: 'SFPro')),
+        title: Text('Product Page', style: TextStyle(fontFamily: 'SFPro')),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
       ),
@@ -106,7 +107,7 @@ class _ProductListPageState extends State<ProductListPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailPage(
+                        builder: (context) => ProductDetailPageAdmin(
                           product: filteredProducts()[index],
                         ),
                       ),
@@ -159,6 +160,16 @@ class _ProductListPageState extends State<ProductListPage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProductPage()),
+          );
+        },
+        backgroundColor: Colors.black,
+        child: Icon(Icons.add),
       ),
     );
   }

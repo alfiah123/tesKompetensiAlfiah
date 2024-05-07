@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:teskompetensi_alfiah/view/menu_page.dart';
-import 'package:teskompetensi_alfiah/view/order_page.dart';
 import 'package:teskompetensi_alfiah/view/profile_page.dart';
 import 'package:teskompetensi_alfiah/viewAdmin/order_page.dart';
 import 'package:teskompetensi_alfiah/viewAdmin/product_page.dart';
@@ -21,7 +19,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
     List<Widget> tabs = <Widget>[
       ProductListPage(),
       UserCRUDPage(),
-      AdminUserCRUDPage(),
+      // AdminUserCRUDPage(),
       OrderCRUDPage(),
       ProfilePage(),
     ];
@@ -50,10 +48,10 @@ class _HomePageAdminState extends State<HomePageAdmin> {
             icon: Icon(Icons.shopping_cart),
             label: 'Users',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'User Admin',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.person),
+          //   label: 'User Admin',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.note),
             label: 'Orders',

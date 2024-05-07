@@ -21,9 +21,10 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 80,
-                backgroundImage: AssetImage('images/profil.png'),
+                backgroundImage: NetworkImage(
+                    'https://static.thenounproject.com/png/642902-200.png'),
                 backgroundColor: Colors.grey,
               ),
               SizedBox(height: 20),
