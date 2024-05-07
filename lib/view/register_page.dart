@@ -72,19 +72,63 @@ class RegisterPage extends StatelessWidget {
                 String address = addressController.text;
                 String password = passwordController.text;
 
-                UserModel newUser = UserModel(
-                  username: name,
-                  address: address,
-                  role: 'user',
-                  password: password,
-                );
+                if (name.isNotEmpty &&
+                    address.isNotEmpty &&
+                    password.isNotEmpty) {
+                  // Pengecekan apakah pengguna sudah terdaftar sebelumnya
+                  if (UserRepository.getUserByUsername(name) != null) {
+                    // Menampilkan dialog jika pengguna sudah terdaftar
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Account Already Exists'),
+                          content: Text('The username is already registered.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    UserModel newUser = UserModel(
+                      username: name,
+                      address: address,
+                      role: 'user',
+                      password: password,
+                    );
 
-                UserRepository.addUser(newUser);
+                    UserRepository.addUser(newUser);
 
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  }
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Data Incomplete'),
+                        content: Text('Please fill in all fields.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.black,

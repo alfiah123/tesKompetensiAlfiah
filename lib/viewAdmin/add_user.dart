@@ -75,19 +75,6 @@ class _AddUserPageState extends State<AddUserPage> {
                 // String role = roleController.text;
                 String password = passwordController.text;
 
-                // UserModel newUser = UserModel(
-                //   username: username,
-                //   address: address,
-                //   role: selectedRole,
-                //   password: password,
-                // );
-
-                // UserRepository.addUser(newUser);
-
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomePageAdmin()),
-                // );
                 if (username.isNotEmpty &&
                     address.isNotEmpty &&
                     password.isNotEmpty) {
